@@ -15,6 +15,8 @@ class MudServer():
         self.clients = {}
         self._nextid = 0
 
+        self.new_connections = []
+
     def _accept_new_connections(self):
         # 'select' is used to check whether there is data waiting to be read
         # from the socket. We pass in 3 lists of sockets, the first being those
@@ -31,6 +33,8 @@ class MudServer():
 
         self.clients[self._nextid] = MudClient(conn, addr)
         self._nextid += 1
+
+        self.new_connections.append(conn)
 
         print('New Connection')
         print(conn)
@@ -96,3 +100,6 @@ class MudServer():
     def update(self):
         self._accept_new_connections()
         self._get_messages()
+        # This function should be added to in a subclass, call game specific
+        # functionality after a call to super().update()
+        

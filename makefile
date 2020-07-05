@@ -3,3 +3,6 @@ start:
 
 t: 
 	pytest tests/*
+
+tc:
+	pytest --cov
