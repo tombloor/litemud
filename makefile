@@ -1,8 +1,9 @@
 start: 
 	python manage.py start
 
-t: 
-	pytest tests/*
+format:
+	black .
 
-tc:
-	pytest --cov
+t: 
+	TEST_MODE=1 pytest --cov
+

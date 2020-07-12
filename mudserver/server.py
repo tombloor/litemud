@@ -4,8 +4,8 @@ import time
 
 from mudserver.client import MudClient
 
-class MudServer():
 
+class MudServer:
     def __init__(self):
         self.buffer_size = 1024
         self.tick_length = 0.1
@@ -31,48 +31,49 @@ class MudServer():
         conn, addr = self._listen_socket.accept()
         conn.setblocking(False)
 
-        self.clients[self._nextid] = MudClient(conn, addr)
+        client_id = self._nextid
+        self.clients[client_id] = MudClient(conn, addr)
         self._nextid += 1
 
-        self.new_connections.append(conn)
+        self.new_connections.append(client_id)
 
-        print('New Connection')
-        print(conn)
+        # print('New Connection')
+        # print(conn)
 
     def _check_for_disconnects(self):
         for client_id, client in list(self.clients.items()):
             # if we last checked less than 5 seconds ago, skip this client
             if time.time() - client.lastcheck < 5.0:
                 continue
-            
+
             # send invisible char to make sure the socket is writable
             client.lastcheck = time.time()
             # For some reason the first time doesn't always error
-            self._send_message(client_id, '\x00')
-            self._send_message(client_id, '\x00')
+            self._send_message(client_id, "\x00")
+            self._send_message(client_id, "\x00")
 
     def _get_messages(self):
         for client_id, client in self.clients.items():
             try:
                 msg = client.socket.recv(self.buffer_size)
                 if msg:
-                    print(f'msg from {client.addr}: {msg}')
+                    # print(f'msg from {client.addr}: {msg}')
                     client.buffer = msg
             except BlockingIOError:
                 pass
 
-    def _send_message(self, client_id, msg):
+    def _send_message(self, client_id, msg, add_new_line=True):
         try:
             if not isinstance(msg, bytes):
-                msg = bytes(msg, 'latin1')
+                msg = bytes(msg, "latin1")
             client = self.clients[client_id]
             client.socket.sendall(msg)
         except socket.error:
             # Some sort of notification that the client is disconnected
-            del(self.clients[client_id])
+            del self.clients[client_id]
 
     def start(self):
-        print('Starting the MUD!')
+        # print('Starting the MUD!')
 
         self._listen_socket = socket.socket()
         self._listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -92,7 +93,7 @@ class MudServer():
         try:
             self.running = False
             self._listen_socket.close()
-            print("Graceful shutdown complete")
+            # print("Graceful shutdown complete")
         except Exception as err:
             print("Unable to shutdown gracefully")
             print(err)
@@ -100,6 +101,3 @@ class MudServer():
     def update(self):
         self._accept_new_connections()
         self._get_messages()
-        # This function should be added to in a subclass, call game specific
-        # functionality after a call to super().update()
-        

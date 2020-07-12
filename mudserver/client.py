@@ -1,5 +1,6 @@
 import time
 
+
 class MudClient:
     socket = None
     addr = None
