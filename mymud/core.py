@@ -1,6 +1,7 @@
 import time
 import os
 from mudserver.server import MudServer
+from mymud.routers import BaseRouter
 
 DEFAULTS = {
     "TEST_MODE": os.getenv("TEST_MODE", 0),

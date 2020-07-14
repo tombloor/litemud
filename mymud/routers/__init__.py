@@ -1,1 +1,1 @@
-from base_router import BaseRouter
+from mymud.routers.base_router import BaseRouter

@@ -68,9 +68,11 @@ def test_core_get_commands(mock_core):
 
 
 def test_core_call_router(mock_core, mocker):
-    mock_router = mocker.patch('mymud.routers.base_router.route')
+    mock_router = mocker.patch('mymud.routers.BaseRouter.route')
     test_command = 'say "hello, world!"'
 
     mock_core.commands[0] = test_command
+    mock_core.update()
+
     mock_router.assert_called_once_with(0, test_command)
 
