@@ -1,7 +1,7 @@
 import pytest
 from pytest_mock import mocker
 
-from mymud.routers import BaseRouter
+from litemud.routers import BaseRouter
 
 def test_parse_single_command():
     command = 'help'

@@ -3,7 +3,7 @@ from pytest_mock import mocker
 
 from mudserver.server import MudServer
 from mudserver.client import MudClient
-from mymud.core import MyMudCore
+from litemud.core import MyMudCore
 
 
 @pytest.fixture
@@ -15,7 +15,7 @@ def mock_core():
 
 def test_core_start_server(mock_core, mocker):
     mock_start = mocker.patch("mudserver.server.MudServer.start")
-    mock_loop = mocker.patch("mymud.core.MyMudCore.game_loop")
+    mock_loop = mocker.patch("litemud.core.MyMudCore.game_loop")
 
     mock_core.start()
     mock_start.assert_called_once()
@@ -68,7 +68,7 @@ def test_core_get_commands(mock_core):
 
 
 def test_core_call_router(mock_core, mocker):
-    mock_router = mocker.patch('mymud.routers.BaseRouter.route')
+    mock_router = mocker.patch('litemud.routers.BaseRouter.route')
     test_command = 'say "hello, world!"'
 
     mock_core.commands[0] = test_command

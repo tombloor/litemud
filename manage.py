@@ -1,6 +1,6 @@
 import time
 import sys
-from mymud.core import MyMudCore
+from litemud.core import MyMudCore
 
 CONFIG = {"logon_message": "Welcome to myMud server"}
 
